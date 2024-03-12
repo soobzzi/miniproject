@@ -19,14 +19,14 @@ public class UpdatePurchaseViewAction extends Action{
 		
 		int tranNo = Integer.parseInt(request.getParameter("tranNo"));
 		
-		PurchaseVO pur = new PurchaseVO();
+		PurchaseVO purchase = new PurchaseVO();
 		PurchaseService servicee = new PurchaseServiceImpl();
-		pur = servicee.getPurchase(tranNo);
+		purchase = servicee.getPurchase(tranNo);
 		//
 		
-		request.setAttribute("pur", pur);
+		request.setAttribute("purchase", purchase);
 		
-		System.out.println("备概备概" +pur);
+		System.out.println("备概备概" +purchase);
 		
 		return "forward:/purchase/updatePurchaseView.jsp";
 	}

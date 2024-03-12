@@ -3,9 +3,9 @@
     
 <%@ page import = "com.model2.mvc.service.purchase.vo.*" %>    
     
-<% PurchaseVO pur = (PurchaseVO)request.getAttribute("pur"); 
+<% PurchaseVO purchase = (PurchaseVO)request.getAttribute("purchase"); 
 
-	System.out.println(pur);%>
+	System.out.println(purchase);%>
 
 <html>
 <head>
@@ -48,8 +48,8 @@
 	<tr>
 		<td width="104" class="ct_write">구매자아이디</td>
 		<td bgcolor="D6D6D6" width="1"></td>
-		<td class="ct_write01"><%= pur.getBuyer().getUserId() %></td>
-		<input type="hidden" name="buyerId" value="<%= pur.getBuyer().getUserId() %>">
+		<td class="ct_write01"><%= purchase.getBuyer().getUserId() %></td>
+		<input type="hidden" name="buyerId" value="<%= purchase.getBuyer().getUserId() %>">
 	</tr>
 	<tr>
 		<td height="1" colspan="3" bgcolor="D6D6D6"></td>
@@ -60,7 +60,7 @@
 		<td class="ct_write01">
 			<select 	name="paymentOption" 	class="ct_input_g" style="width: 100px; height: 19px" 
 							maxLength="20">
-				<% if(pur.getPaymentOption().equals("1")) {%>
+				<% if(purchase.getPaymentOption().equals("1")) {%>
 				<option value="1" selected="selected">현금구매</option>
 				<option value="2">신용구매</option>
 				<% }else{ %>
@@ -79,7 +79,7 @@
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<input 	type="text" name="receiverName" 	class="ct_input_g" style="width: 100px; height: 19px" 
-							maxLength="20" value="<%= pur.getReceiverName() %>" />
+							maxLength="20" value="<%= purchase.getReceiverName() %>" />
 		</td>
 	</tr>
 	<tr>
@@ -90,7 +90,7 @@
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<input 	type="text" name="receiverPhone" class="ct_input_g" style="width: 100px; height: 19px" 
-							maxLength="20" value="<%= pur.getReceiverPhone() %>" />
+							maxLength="20" value="<%= purchase.getReceiverPhone() %>" />
 		</td>
 	</tr>
 
@@ -102,7 +102,7 @@
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<input 	type="text" name="receiverAddr" class="ct_input_g" style="width: 100px; height: 19px" 
-							maxLength="20" value="<%=pur.getDivyAddr() %>" />
+							maxLength="20" value="<%=purchase.getDivyAddr() %>" />
 		</td>
 	</tr>
 	<tr>
@@ -113,7 +113,7 @@
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td class="ct_write01">
 			<input 	type="text" name="receiverRequest" 	class="ct_input_g" style="width: 100px; height: 19px" 
-							maxLength="20" value="<%=pur.getDivyRequest() %>" />
+							maxLength="20" value="<%=purchase.getDivyRequest() %>" />
 		</td>
 	</tr>
 	<tr>
@@ -124,7 +124,7 @@
 		<td bgcolor="D6D6D6" width="1"></td>
 		<td width="200" class="ct_write01">
 			<input type="text" readonly="readonly" name="divyDate" class="ct_input_g" 
-						style="width: 100px; height: 19px" maxLength="20" value = "<%= pur.getDivyDate()%>"/>
+						style="width: 100px; height: 19px" maxLength="20" value = "<%= purchase.getDivyDate()%>"/>
 				<img 	src="../images/ct_icon_date.gif" width="15" height="15"	
 							onclick="show_calendar('document.updatePurchase.divyDate', document.updatePurchase.divyDate.value)"/>
 		</td>

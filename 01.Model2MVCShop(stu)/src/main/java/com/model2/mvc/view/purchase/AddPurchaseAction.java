@@ -46,7 +46,7 @@ public class AddPurchaseAction extends Action{
 		//add
 		service.addPurchase(purchase);
 		
-		request.setAttribute("pur", purchase);
+		request.setAttribute("purchase", purchase);
 		
 		return "forward:/purchase/addPurchase.jsp";
 		

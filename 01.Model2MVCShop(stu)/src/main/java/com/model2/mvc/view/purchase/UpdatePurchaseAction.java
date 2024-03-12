@@ -17,7 +17,7 @@ public class UpdatePurchaseAction extends Action{
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		PurchaseVO pur = new PurchaseVO();
+		PurchaseVO purchase = new PurchaseVO();
 		
 		UserService service = new UserServiceImpl();
 		UserVO user = service.getUser("userId");
@@ -25,20 +25,20 @@ public class UpdatePurchaseAction extends Action{
 		
 		String tranNo = request.getParameter("tranNo");
 		
-		pur.setTranNo(Integer.parseInt(request.getParameter("tranNo")));
-		pur.setBuyer(user);
-		pur.setPaymentOption(request.getParameter("paymentOption"));
-		pur.setReceiverName(request.getParameter("receiverName"));
-		pur.setReceiverPhone(request.getParameter("receiverPhone"));
-		pur.setDivyAddr(request.getParameter("divyaddr"));
-		pur.setDivyRequest(request.getParameter("divyrRequest"));
-		pur.setDivyDate(request.getParameter("divyDate"));
-		pur.setOrderDate(Date.valueOf(request.getParameter("orderDate")));
+		purchase.setTranNo(Integer.parseInt(request.getParameter("tranNo")));
+		purchase.setBuyer(user);
+		purchase.setPaymentOption(request.getParameter("paymentOption"));
+		purchase.setReceiverName(request.getParameter("receiverName"));
+		purchase.setReceiverPhone(request.getParameter("receiverPhone"));
+		purchase.setDivyAddr(request.getParameter("divyaddr"));
+		purchase.setDivyRequest(request.getParameter("divyrRequest"));
+		purchase.setDivyDate(request.getParameter("divyDate"));
+		purchase.setOrderDate(Date.valueOf(request.getParameter("orderDate")));
 		//Date.valueOf
 		
 		
 		PurchaseService servicee = new PurchaseServiceImpl();
-		servicee.updatePurchase(pur);
+		servicee.updatePurchase(purchase);
 		
 		
 		

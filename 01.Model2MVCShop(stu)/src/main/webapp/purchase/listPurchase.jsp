@@ -106,23 +106,23 @@
 	int no = list.size();
 	
 	for(int i = 0 ; i<list.size() ; i++){
-		PurchaseVO pur = (PurchaseVO)list.get(i);
+		PurchaseVO purchase = (PurchaseVO)list.get(i);
 	
 	
 	%>
 	
 	<tr class="ct_list_pop">
 		<td align="center">
-			<a href="/getPurchase.do?tranNo=<%= pur.getTranNo()%>"><%= no-- %></a>
+			<a href="/getPurchase.do?tranNo=<%= purchase.getTranNo()%>"><%= no-- %></a>
 		</td>
 		<td></td>
 		<td align="left">
-			<a href="/getUser.do?userId=<%= pur.getBuyer().getUserId()%>"><%=pur.getBuyer().getUserId() %></a>
+			<a href="/getUser.do?userId=<%= purchase.getBuyer().getUserId()%>"><%=purchase.getBuyer().getUserId() %></a>
 		</td>
 		<td></td>
-		<td align="left"><%= pur.getReceiverName() %></td>
+		<td align="left"><%= purchase.getReceiverName() %></td>
 		<td></td>
-		<td align="left"><%= pur.getReceiverPhone() %></td>
+		<td align="left"><%= purchase.getReceiverPhone() %></td>
 		<td></td>
 		<td align="left">
 		
