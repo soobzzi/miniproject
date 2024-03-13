@@ -25,6 +25,9 @@ public class LoginAction extends Action{
 		HttpSession session=request.getSession();
 		session.setAttribute("user", dbVO);
 		
+		String menu = request.getParameter("menu");
+		session.setAttribute("menu", menu);
+		
 		return "redirect:/index.jsp";
 	}
 }

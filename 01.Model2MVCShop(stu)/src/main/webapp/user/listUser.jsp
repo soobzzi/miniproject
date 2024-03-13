@@ -183,7 +183,7 @@ function fncGetUserList(){
 		<% for(int centerPage = startPage ; centerPage <= endPage ; centerPage++){ %>
 		
 			<%if(currentPage == totalPage){ %>
-				<a href="/listProduct.do?page=<%= totalPage %>"></a>
+				<a href="/listUser.do?page=<%= totalPage %>"></a>
 			<%} %>
 		
 		<%if(centerPage == currentPage ){ %>
@@ -191,9 +191,9 @@ function fncGetUserList(){
 		<%}else{%>
 		
 			<% if(searchVO.getSearchKeyword() != null ){ %>
-				<a href="/listProduct.do?page=<%= centerPage %>&menu=<%= request.getParameter("menu") %>&searchCondition=<%= searchVO.getSearchCondition() %>&searchKeyword=<%= searchVO.getSearchKeyword() %>"><%=centerPage %></a>
+				<a href="/listUser.do?page=<%= centerPage %>&menu=<%= request.getParameter("menu") %>&searchCondition=<%= searchVO.getSearchCondition() %>&searchKeyword=<%= searchVO.getSearchKeyword() %>"><%=centerPage %></a>
 			<%}else{ %>
-				<a href="/listProduct.do?page=<%= centerPage %>&menu=<%= request.getParameter("menu") %>"><%=centerPage %></a>
+				<a href="/listUser.do?page=<%= centerPage %>&menu=<%= request.getParameter("menu") %>"><%=centerPage %></a>
 			
 			<%}%>
 			
@@ -203,9 +203,9 @@ function fncGetUserList(){
 		
 		<% if(currentPage < totalPage){ %>
 			<% if (searchVO.getSearchKeyword() != null) {%>
-			<a href="/listProduct.do?page=<%= currentPage +1 %>&menu=<%=request.getParameter("menu")%>&searchCondition=<%= searchVO.getSearchCondition()%>&searchKeyword=<%=searchVO.getSearchKeyword()%>"> > </a>
+			<a href="/listUser.do?page=<%= currentPage +1 %>&menu=<%=request.getParameter("menu")%>&searchCondition=<%= searchVO.getSearchCondition()%>&searchKeyword=<%=searchVO.getSearchKeyword()%>"> > </a>
 		<%}else{%>
-			<a href="/listProduct.do?page=<%= currentPage +1 %>&menu=<%=request.getParameter("menu")%>"> > </a>
+			<a href="/listUser.do?page=<%= currentPage +1 %>&menu=<%=request.getParameter("menu")%>"> > </a>
 		<%} %>
 		<%} %>
 	

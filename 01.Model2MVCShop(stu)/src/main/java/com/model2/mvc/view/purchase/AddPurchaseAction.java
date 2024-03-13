@@ -4,8 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.Session;
-
 import com.model2.mvc.framework.Action;
 import com.model2.mvc.service.product.vo.ProductVO;
 import com.model2.mvc.service.purchase.PurchaseService;
@@ -34,6 +32,7 @@ public class AddPurchaseAction extends Action{
 		purchase.setDivyAddr(request.getParameter("receiverAddr"));
 		purchase.setDivyRequest(request.getParameter("receiverRequest"));
 		purchase.setDivyDate(request.getParameter("receiverDate").replaceAll("-", ""));
+		purchase.setTranCode("0");
 		
 		System.out.println("AddPurchaseAction ½ÇÇàµÊ");
 		

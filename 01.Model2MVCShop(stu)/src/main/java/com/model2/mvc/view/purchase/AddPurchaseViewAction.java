@@ -34,27 +34,6 @@ public class AddPurchaseViewAction extends Action {
 		UserVO user = (UserVO)session.getAttribute("user");
 		
 		System.out.println("======================");
-		
-//		int prodNo = Integer.parseInt(request.getParameter("prodNo"));
-//		product.setProdNo(prodNo);
-//		product.setProdName(request.getParameter("prodName"));
-//		product.setProdDetail(request.getParameter("prodDetail"));
-//		product.setManuDate(request.getParameter("manuDate"));
-//		int price = Integer.parseInt(request.getParameter("price"));
-//		product.setPrice(price);
-//		Date regDate = Date.valueOf("regDate");
-//		product.setRegDate(regDate);
-//		//user.setUserId(user.getUserId());//고정임//purchase로 해야함
-//		purchase.setPaymentOption(request.getParameter("paymentOption"));
-//		//user.setPhone(user.getPhone());//purchase로 해야함
-//		purchase.setReceiverPhone(request.getParameter("receiverPhone").replaceAll("-", ""));
-//		//user.setAddr(user.getAddr()); //purchase로 해야함
-//		purchase.setDivyAddr(request.getParameter("receiverAddr"));
-//		purchase.setDivyRequest(request.getParameter("receiverRequest"));
-//		purchase.setDivyDate(request.getParameter("receiverDate"));
-		
-		//통째로 다가져옴
-		
 		System.out.println("purchaseVO : "+purchase);
 		
 		purchase.setPurchaseProd(product);

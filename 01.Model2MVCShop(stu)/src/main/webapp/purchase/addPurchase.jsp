@@ -35,7 +35,11 @@
 		<td>구매방법</td>
 		<td>
 		
-			<%= purchase.getPaymentOption() %>
+			<% if ( purchase.getPaymentOption().equals("1")) { %>
+				현금구매
+			<%}else if( purchase.getPaymentOption().equals("2")){%>
+				신용구매
+			<%} %>
 		
 		</td>
 		<td></td>

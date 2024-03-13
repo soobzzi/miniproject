@@ -26,7 +26,7 @@ public class PurchaseDAO {
 		Connection con = DBUtil.getConnection();
 		
 		String sql = "INSERT INTO transaction values"
-				+ "(seq_transaction_tran_no.nextval,?,?,?,?,?,?,?,1,sysdate,?)";
+				+ "(seq_transaction_tran_no.nextval,?,?,?,?,?,?,?,?,sysdate,?)";
 					
 		PreparedStatement stmt = con.prepareStatement(sql);
 		//Pruco sprco = purchasevo.get(); 미리 user랑 purchase 불러와서 사용가능

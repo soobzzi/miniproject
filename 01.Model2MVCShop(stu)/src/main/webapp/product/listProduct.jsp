@@ -176,6 +176,8 @@ function fncGetProductList(){
 		int no=list.size();
 		for(int i=0; i<list.size(); i++) {
 			ProductVO vo = (ProductVO)list.get(i);
+			
+			System.out.println(vo.toString());
 	%>
 		
 	<tr class="ct_list_pop">
@@ -192,7 +194,7 @@ function fncGetProductList(){
 		<td align="left">
 	
 		
-			∆«∏≈¡ﬂ
+			<%= vo.getProTranCode() %>
 		
 		</td>	
 	</tr>
@@ -211,35 +213,35 @@ function fncGetProductList(){
 		
 		
 			
-		<% if(currentPage > 1){ 
-				if(searchVO.getSearchKeyword() != null ){%>
-			<a href="/listProduct.do?page=<%= currentPage-1 %>&menu=<%=request.getParameter("menu")%>&searchCondition=<%=searchVO.getSearchCondition()%>&searchKeyword=<%=searchVO.getSearchKeyword()%>"> < </a>
-		<%}else{%>
-			<a href="/listProduct.do?page=<%= currentPage-1 %>&menu=<%=request.getParameter("menu")%>"> < </a>
-				
-				
-		<%}%>
-		<%}%>
-				
-		<% for(int centerPage = startPage ; centerPage <= endPage ; centerPage++){ %>
+	<% for(int centerPage = startPage ; centerPage <= endPage ; centerPage++){ %>
 		
 			<%if(currentPage == totalPage){ %>
 				<a href="/listProduct.do?page=<%= totalPage %>"></a>
 			<%} %>
 		
-			<% if(centerPage == currentPage ){ %>
-				<b><%= centerPage %></b>
+		<%if(centerPage == currentPage ){ %>
+			<b><%= centerPage %></b>
+		<%}else{%>
+		
+			<% if(searchVO.getSearchKeyword() != null ){ %>
+				<a href="/listProduct.do?page=<%= centerPage %>&menu=<%= request.getParameter("menu") %>&searchCondition=<%= searchVO.getSearchCondition() %>&searchKeyword=<%= searchVO.getSearchKeyword() %>"><%=centerPage %></a>
+			<%}else{ %>
+				<a href="/listProduct.do?page=<%= centerPage %>&menu=<%= request.getParameter("menu") %>"><%=centerPage %></a>
+			
+			<%}%>
 			
 		<%}%>
 		
 		<%} %>
 		
 		<% if(currentPage < totalPage){ %>
-			
+			<% if (searchVO.getSearchKeyword() != null) {%>
+			<a href="/listProduct.do?page=<%= currentPage +1 %>&menu=<%=request.getParameter("menu")%>&searchCondition=<%= searchVO.getSearchCondition()%>&searchKeyword=<%=searchVO.getSearchKeyword()%>"> > </a>
+		<%}else{%>
 			<a href="/listProduct.do?page=<%= currentPage +1 %>&menu=<%=request.getParameter("menu")%>"> > </a>
 		<%} %>
-		
-		
+		<%} %>
+			
 		
     	</td>
 	</tr>

@@ -3,6 +3,7 @@ package com.model2.mvc.web.product;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -53,7 +54,7 @@ public class ProductController {
 	}
 	
 	@RequestMapping("/getProduct.do")
-	public String getProduct(@RequestParam("prodNo") int prodNo ,@RequestParam("menu") String menu, Model model)throws Exception{
+	public String getProduct(@RequestParam("prodNo") int prodNo ,@RequestParam("menu") String menu, Model model,HttpServletRequest request,HttpServletResponse response)throws Exception{
 		
 		System.out.println("/getProduct.do");
 		
@@ -67,6 +68,41 @@ public class ProductController {
 		}else if(menu.equals("update")){
 			return "forward:/product/updateProduct.jsp";	
 		}	
+		
+		Cookie[] cookies = request.getCookies();
+		//리퀘스트에 존재하는 모든 쿠키 가져옴
+		String history = null;
+		
+		boolean coo = true;
+		
+		int index = 0;
+		
+		for (int i = 0; i < cookies.length; i++) {
+				Cookie cookie = cookies[i];
+				if (cookie.getName().equals("history")) {
+					//히스토리란 이름을 가진걸 찾음
+					coo = false;
+					index = i;
+					break;				
+				}				
+			}
+		
+		if (coo) {		
+			Integer itg = new Integer(prodNo);
+			Cookie cookie = new Cookie("history",itg.toString());
+			//쿠키가 없을때 만들어줌
+			response.addCookie(cookie);	
+			
+		}else {	
+			history = cookies[index].getValue();
+					//업데이트된 벨류값을 히스토리에저장
+					history += ":"+ product.getProdNo();
+					cookies[index].setValue(history);
+					//업데이트된 히스토리를 담아서 보내줌
+					cookies[index].setPath("/");
+					response.addCookie(cookies[index]);
+					//브라우저에 보내기위해 리스펀스에 실어보냄	
+		}
 		
 		
 		return "forward:/product/getProduct.jsp";

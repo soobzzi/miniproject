@@ -52,7 +52,9 @@ public class ProductDAO {
 		
 		Connection con = DBUtil.getConnection();
 		
-		String sql = "select * from PRODUCT ";
+		String sql = "select p.prod_no,p.prod_name ,p.prod_detail, p.manufacture_day,p.price,p.image_file,p.reg_date ,t.tran_status_code"
+				+ " from product p, transaction t"
+				+ " where p.prod_no = t.prod_no(+) ";
 		if(searchVO.getSearchCondition() != null) {
 			if(searchVO.getSearchCondition().equals("0")) {
 				sql += "where PROD_NO like '%" + searchVO.getSearchKeyword()+"%' ";
@@ -65,6 +67,8 @@ public class ProductDAO {
 			//SearchCondition은 앞에 선택하는부분 , Keyword 는 뒤에 검색할거 적는 부분
 	
 		sql += "ORDER BY PROD_NO";
+		
+		System.out.println(sql);
 		
 		PreparedStatement stmt = con.prepareStatement( sql,ResultSet.TYPE_SCROLL_INSENSITIVE,
 														ResultSet.CONCUR_UPDATABLE);
@@ -95,6 +99,27 @@ public class ProductDAO {
 				vo.setFileName(rs.getString("IMAGE_FILE"));
 				vo.setProdDetail(rs.getString("PROD_DETAIL"));
 				vo.setRegDate(rs.getDate("REG_DATE"));
+				
+				
+				String TranCode = rs.getString("tran_status_code");
+				
+				System.out.println(":::::"+TranCode);
+				
+				if(TranCode != null) {
+					TranCode = TranCode.trim();
+					
+				}
+				
+				if(TranCode == null) {
+					vo.setProTranCode("판매중");
+				}else if(TranCode.equals("0")) {
+					vo.setProTranCode("판매완료");
+				}else if(TranCode.equals("1")) {
+					vo.setProTranCode("배송중");
+				}else if(TranCode.equals("2")){
+					vo.setProTranCode("배송완료");
+				}
+				
 				
 				list.add(vo);
 				
