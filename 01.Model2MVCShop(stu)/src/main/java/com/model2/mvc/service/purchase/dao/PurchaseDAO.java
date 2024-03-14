@@ -148,6 +148,14 @@ public class PurchaseDAO {
 		
 	}
 //	public HashMap<String, Object> getSaleList(SearchVO search) throws Exception {
+//		
+//		Connection con = DBUtil.getConnection();
+//		
+//		String sql = "select * from transaction";
+//		
+//		PreparedStatement stmt = con.prepareStatement(sql);
+//		
+//	
 //		return null;
 //	}
 	
@@ -156,7 +164,7 @@ public class PurchaseDAO {
 		Connection con = DBUtil.getConnection();
 		
 		String sql = "update purchase set buyer_id = ?,payment_option = ?,receiver_name= ?,"
-				+ "receiver_phone= ?,demailaddr= ?,dlvy_request= ?,dlvy_date= ?";
+				+ "receiver_phone= ?,demailaddr= ?,dlvy_request= ?,dlvy_date= ? where tranNo = ?";
 		
 		PreparedStatement stmt = con.prepareStatement(sql);
 		
@@ -168,6 +176,7 @@ public class PurchaseDAO {
 		stmt.setString(6, purchase.getDivyAddr());
 		stmt.setString(7, purchase.getDivyRequest());
 		stmt.setString(8, purchase.getDivyDate());
+		stmt.setString(9, purchase.getTranNo());
 		
 		stmt.executeUpdate();
 		
