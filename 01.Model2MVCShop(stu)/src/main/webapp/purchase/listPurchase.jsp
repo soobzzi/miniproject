@@ -54,7 +54,7 @@
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
 <script type="text/javascript">
-	function fncGetUserList() {
+	function fncGetPurchaseList() {
 		document.detailForm.submit();
 	}
 </script>
@@ -126,11 +126,13 @@
 		<td></td>
 		<td align="left">
 		
-			현재 구매완료 상태 입니다.</td>
+			<%= purchase.getTranCode() %> 상태 입니다.</td>
 		<td></td>
 		<td align="left">
 		
-			<a href="/updateTranCode.do?tranNo=<%= purchase.getTranNo() %>&tranCode=3"><%= purchase.getPurchaseProd().getProTranCode() %></a>
+		<% if (purchase.getTranCode().equals("현재 배송중")) {%>
+			<a href="/updateTranCode.do?tranNo=<%= purchase.getTranNo() %>&tranCode=2">물건도착</a>
+		<%} %>
 		
 			
 		</td>

@@ -93,7 +93,7 @@ public class PurchaseDAO {
 		Connection con = DBUtil.getConnection();
 		
 		String sql = "select  buyer_id, demailaddr, "
-				+ "TO_CHAR(dlvy_date, 'YYYY-MM-DD') dlvy_date "
+				+ "TO_CHAR(dlvy_date, 'YYYY-MM-DD') dlvy_date, "
 				+ "dlvy_request, order_data,payment_option ,receiver_name,"
 				+ "receiver_phone, 	tran_status_code, tran_no,prod_no "
 				+ "FROM transaction";
@@ -128,8 +128,19 @@ public class PurchaseDAO {
 				pur.setBuyer(uservice.getUser(rs.getString("buyer_id")));
 				pur.setReceiverName(rs.getString("receiver_name"));
 				pur.setReceiverPhone(rs.getString("receiver_phone"));
-				pur.setTranCode(rs.getString("tran_status_code"));
 				
+				String TranCode = rs.getString("tran_status_code").trim();
+				
+				//null 은 없어.... 프로덕트만... 구매안하면 안생기니까 없는거야...
+				
+				if(TranCode.equals("0")) {
+					pur.setTranCode("현재 구매완료");
+				}else if(TranCode.equals("1")) {
+					pur.setTranCode("현재 배송중");
+				}else if(TranCode.equals("2")){
+					pur.setTranCode("배송완료");
+				}
+								
 				list.add(pur);
 				
 				if(!rs.next()) {
@@ -163,8 +174,8 @@ public class PurchaseDAO {
 		
 		Connection con = DBUtil.getConnection();
 		
-		String sql = "update purchase set buyer_id = ?,payment_option = ?,receiver_name= ?,"
-				+ "receiver_phone= ?,demailaddr= ?,dlvy_request= ?,dlvy_date= ? where tranNo = ?";
+		String sql = "update transaction set buyer_id = ?,payment_option = ?,receiver_name= ?,"
+				+ "receiver_phone= ?,demailaddr= ?,dlvy_request= ?,dlvy_date= ? where tran_no = ?";
 		
 		PreparedStatement stmt = con.prepareStatement(sql);
 		
@@ -176,7 +187,7 @@ public class PurchaseDAO {
 		stmt.setString(6, purchase.getDivyAddr());
 		stmt.setString(7, purchase.getDivyRequest());
 		stmt.setString(8, purchase.getDivyDate());
-		stmt.setString(9, purchase.getTranNo());
+		stmt.setInt(9, purchase.getTranNo());
 		
 		stmt.executeUpdate();
 		
@@ -187,6 +198,35 @@ public class PurchaseDAO {
 	}
 	
 	public void updateTranCode(PurchaseVO purchase) throws Exception {
+		
+		Connection con = DBUtil.getConnection();
+		
+		String sql = "update transaction set tran_status_code = 2 where tran_no = ?";
+		//배송도착
+
+		PreparedStatement stmt = con.prepareStatement(sql);
+		
+		stmt.setInt(1, purchase.getTranNo());
+		stmt.executeUpdate();
+		
+		con.close();
+		
+	}
+	public void updateTranCodeByProd(ProductVO product) throws Exception {
+		//해당 물건리스트 중에서 판매완료된 애들 배송시작하는 버튼 누르는 액션
+		
+		Connection con = DBUtil.getConnection();
+		
+		String sql = "update transaction set tran_status_code = 1 where prod_no = ?";
+		//배송시작
+
+		PreparedStatement stmt = con.prepareStatement(sql);
+		
+		stmt.setInt(1, product.getProdNo());
+		
+		stmt.executeUpdate();
+		
+		con.close();
 		
 	}
 

@@ -3,6 +3,7 @@ package com.model2.mvc.service.purchase.impl;
 import java.util.HashMap;
 
 import com.model2.mvc.common.SearchVO;
+import com.model2.mvc.service.product.vo.ProductVO;
 import com.model2.mvc.service.purchase.PurchaseService;
 import com.model2.mvc.service.purchase.dao.PurchaseDAO;
 import com.model2.mvc.service.purchase.vo.PurchaseVO;
@@ -37,11 +38,17 @@ public class PurchaseServiceImpl implements PurchaseService{
 
 	@Override
 	public PurchaseVO updatePurchase(PurchaseVO purchase) throws Exception {
-		return null;
+		return purchaseDAO.updatePurchase(purchase);
 	}
 
 	@Override
 	public void updateTranCode(PurchaseVO purchase) throws Exception {
+		purchaseDAO.updateTranCode(purchase);
+	}
+
+	@Override
+	public void updateTranCodeByProd(ProductVO product) throws Exception {
+		purchaseDAO.updateTranCodeByProd(product);
 		
 	}
 

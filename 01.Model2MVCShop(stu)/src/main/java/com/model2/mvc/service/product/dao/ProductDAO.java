@@ -100,7 +100,6 @@ public class ProductDAO {
 				vo.setProdDetail(rs.getString("PROD_DETAIL"));
 				vo.setRegDate(rs.getDate("REG_DATE"));
 				
-				
 				String TranCode = rs.getString("tran_status_code");
 				
 				System.out.println(":::::"+TranCode);

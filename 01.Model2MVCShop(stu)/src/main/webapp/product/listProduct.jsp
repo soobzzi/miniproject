@@ -194,7 +194,16 @@ function fncGetProductList(){
 		<td align="left">
 	
 		
-			<%= vo.getProTranCode() %>
+			
+			<% if(vo.getProTranCode().equals("판매완료")&&(menu.equals("manage"))) {%>
+			<a href="/updateTranCodeByProd.do?prodNo=<%= vo.getProdNo()%>">배송하기</a>
+			
+			<%}else if(vo.getProTranCode().equals("판매중")&&(menu.equals("search"))) {%>
+			 판매중
+			
+			<%}else{ %>
+			 재고없음
+			<%}%>
 		
 		</td>	
 	</tr>

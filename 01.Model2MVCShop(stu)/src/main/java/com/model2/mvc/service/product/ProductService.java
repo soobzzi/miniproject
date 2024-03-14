@@ -14,4 +14,5 @@ public interface ProductService {
 	public HashMap<String, Object> getProductList (SearchVO searchVO) throws Exception;
 
 	public void updateProduct(ProductVO productVO) throws Exception;
+	
 }
