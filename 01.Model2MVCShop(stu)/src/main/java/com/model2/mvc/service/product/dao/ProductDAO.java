@@ -54,7 +54,7 @@ public class ProductDAO {
 		
 		String sql = "select p.prod_no,p.prod_name ,p.prod_detail, p.manufacture_day,p.price,p.image_file,p.reg_date ,t.tran_status_code"
 				+ " from product p, transaction t"
-				+ " where p.prod_no = t.prod_no(+) ";
+				+ " where p.prod_no = t.prod_no(+)";
 		if(searchVO.getSearchCondition() != null) {
 			if(searchVO.getSearchCondition().equals("0")) {
 				sql += "where PROD_NO like '%" + searchVO.getSearchKeyword()+"%' ";
@@ -121,9 +121,9 @@ public class ProductDAO {
 				
 				
 				list.add(vo);
-				
-				if (!rs.next())
-					break;
+//				
+//				if (!rs.next())
+//					break;
 			}
 		}
 		

@@ -160,6 +160,8 @@ function fncGetProductList(){
 		int no=list.size();
 		for(int i=0; i<list.size(); i++) {
 			Product vo = (Product)list.get(i);
+			
+			System.out.println( "product : " + vo.toString());
 	%>
 		
 	<tr class="ct_list_pop">
@@ -175,8 +177,17 @@ function fncGetProductList(){
 		<td></td>
 		<td align="left">
 	
-		
-			판매중
+			<% System.out.println("tranCode : "+ vo.getProTranCode()); %>
+			
+			<% if(vo.getProTranCode().equals("판매완료")&&(menu.equals("manage")&&(menu != null))) {%>
+			<a href="/updateTranCodeByProd.do?prodNo=<%= vo.getProdNo()%>">배송하기</a>
+			
+			<%}else if(vo.getProTranCode().equals("판매중")&&(menu != null)) {%>
+			 판매중
+			
+			<%}else{ %>
+			 재고없음
+			<%}%>
 		
 		</td>	
 	</tr>

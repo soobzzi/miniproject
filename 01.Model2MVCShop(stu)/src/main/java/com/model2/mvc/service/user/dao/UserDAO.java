@@ -73,10 +73,10 @@ public class UserDAO {
 		String sql = "select * from USERS ";
 		if (searchVO.getSearchCondition() != null) {
 			if (searchVO.getSearchCondition().equals("0")) {
-				sql += " where USER_ID like'%" + searchVO.getSearchKeyword()
+				sql += " where USER_ID like '%" + searchVO.getSearchKeyword()
 						+ "%'";
 			} else if (searchVO.getSearchCondition().equals("1")) {
-				sql += " where USER_NAME like'%" + searchVO.getSearchKeyword()
+				sql += " where USER_NAME like '%" + searchVO.getSearchKeyword()
 						+ "%'";
 			}
 		}

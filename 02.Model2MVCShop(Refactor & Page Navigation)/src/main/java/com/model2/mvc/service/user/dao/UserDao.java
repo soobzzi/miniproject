@@ -89,9 +89,9 @@ public class UserDao {
 		
 		if (search.getSearchCondition() != null) {
 			if ( search.getSearchCondition().equals("0") &&  !search.getSearchKeyword().equals("") ) {
-				sql += " WHERE user_id = '" + search.getSearchKeyword()+"'";
+				sql += " WHERE user_id like '%" + search.getSearchKeyword()+"%'";
 			} else if ( search.getSearchCondition().equals("1") && !search.getSearchKeyword().equals("")) {
-				sql += " WHERE user_name ='" + search.getSearchKeyword()+"'";
+				sql += " WHERE user_name like '%" + search.getSearchKeyword()+"%'";
 			}
 		}
 		sql += " ORDER BY user_id";

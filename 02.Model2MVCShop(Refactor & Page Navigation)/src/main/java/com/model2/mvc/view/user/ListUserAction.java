@@ -15,7 +15,7 @@ import com.model2.mvc.service.user.impl.UserServiceImpl;
 public class ListUserAction extends Action {
 
 	@Override
-	public String execute(HttpServletRequest request,	HttpServletResponse response) throws Exception {
+	public String execute(HttpServletRequest request,HttpServletResponse response) throws Exception {
 
 		Search search=new Search();
 		
@@ -39,7 +39,7 @@ public class ListUserAction extends Action {
 		Map<String , Object> map=userService.getUserList(search);
 		
 		Page resultPage	= 
-					new Page( currentPage, ((Integer)map.get("totalCount")).intValue(), pageUnit, pageSize);
+					new Page( currentPage, (int)map.get("totalCount"), pageUnit, pageSize);
 		System.out.println("ListUserAction ::"+resultPage);
 		
 		// Model °ú View ¿¬°á

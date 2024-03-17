@@ -2,43 +2,23 @@
     pageEncoding="EUC-KR"%>
     
 <%@ page import="java.util.*"  %>
-<%@ page import="com.model2.mvc.service.purchase.vo.*" %>
-<%@ page import="com.model2.mvc.service.product.vo.*" %>
+<%@ page import="com.model2.mvc.service.domain.*" %>
 <%@ page import="com.model2.mvc.common.*" %>
+<%@ page import="com.model2.mvc.common.util.CommonUtil"%>
+
+
 
 <%
 	HashMap<String,Object> map = (HashMap<String,Object>)request.getAttribute("map");
-	SearchVO search = (SearchVO)request.getAttribute("search");
+	List<Purchase> list = (List<Purchase>)map.get("list");
 	
-	int total=0;
-	ArrayList<PurchaseVO> list = null;
-	if(map != null){
-		total=((Integer)map.get("count")).intValue();
-		list = (ArrayList<PurchaseVO>)map.get("list");
-	}
+	Page resultPage = (Page)request.getAttribute("resultPage");
+	Search search = (Search)request.getAttribute("search");
 	
+	String searchCondition = CommonUtil.null2str(search.getSearchCondition());
+	String searchKeyword = CommonUtil.null2str(search.getSearchKeyword());
 	
-	String ps = getServletContext().getInitParameter("pageSize");
-	int pageSize = Integer.parseInt(ps);
-	int currentPage=search.getPage();
-	int pageUnit = search.getPageUnit();
-	int startPage = (( currentPage - 1 )/ pageSize ) * pageSize + 1 ;
-	int endPage = (startPage + pageSize) - 1 ;
-	
-	
-	int totalPage=0;
-	if(total > 0) {
-		totalPage= total / search.getPageUnit() ;
-		//pageUnit 한페이지에 뽑아놓는 수
-		if(total%search.getPageUnit() >0)
-			totalPage += 1;
-	}
-	if(totalPage <= endPage){
-		endPage = totalPage;
-	}
-
 	String menu = request.getParameter("menu");
-	
 %>
 
 
@@ -80,7 +60,7 @@
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0"	style="margin-top: 10px;">
 	<tr>
-		<td colspan="11">전체 <%= total %> 건수, 현재 <%= currentPage %> 페이지</td>
+		<td colspan="11">전체 <%= resultPage.getTotalCount() %> 건수, 현재 <%= resultPage.getCurrentPage() %> 페이지</td>
 	</tr>
 	<tr>
 		<td class="ct_list_b" width="100">No</td>
@@ -104,7 +84,7 @@
 	int no = list.size();
 	
 	for(int i = 0 ; i<list.size() ; i++){
-		PurchaseVO purchase = (PurchaseVO)list.get(i);
+		Purchase purchase = (Purchase)list.get(i);
 		
 	
 	%>
@@ -146,36 +126,30 @@
 	<tr>
 		<td align="center">
 		
-		
-<% for(int centerPage = startPage ; centerPage <= endPage ; centerPage++){ %>
-		
-			<%if(currentPage == totalPage){ %>
-				<a href="/listProduct.do?page=<%= totalPage %>"></a>
-			<%} %>
-		
-		<%if(centerPage == currentPage ){ %>
-			<b><%= centerPage %></b>
-		<%}else{%>
-		
-			<% if(search.getSearchKeyword() != null ){ %>
-				<a href="/listProduct.do?page=<%= centerPage %>&menu=<%= request.getParameter("menu") %>&searchCondition=<%= search.getSearchCondition() %>&searchKeyword=<%= search.getSearchKeyword() %>"><%=centerPage %></a>
-			<%}else{ %>
-				<a href="/listProduct.do?page=<%= centerPage %>&menu=<%= request.getParameter("menu") %>"><%=centerPage %></a>
 			
-			<%}%>
-			
-		<%}%>
-		
+		<% if(resultPage.getBeginUnitPage() > 1) {%>
+			<a href="/listProduct.do?page=1&menu=<%=request.getParameter("menu")%>"> ◀ </a>
 		<%} %>
 		
-		<% if(currentPage < totalPage){ %>
-			<% if (search.getSearchKeyword() != null) {%>
-			<a href="/listProduct.do?page=<%= currentPage +1 %>&menu=<%=request.getParameter("menu")%>&searchCondition=<%= search.getSearchCondition()%>&searchKeyword=<%=search.getSearchKeyword()%>"> > </a>
-		<%}else{%>
-			<a href="/listProduct.do?page=<%= currentPage +1 %>&menu=<%=request.getParameter("menu")%>"> > </a>
+		<% if(resultPage.getCurrentPage() > 1) {%>
+			<a href="/listProduct.do?page=<%=resultPage.getCurrentPage()-1%>&menu=<%=request.getParameter("menu")%>"> ◁ </a>
 		<%} %>
+		
+		<% for(int i = resultPage.getBeginUnitPage() ; i <= resultPage.getEndUnitPage() ; i++){ %>
+			<a href="/listProduct.do?page=<%=i %>&menu=<%=menu%>&searchCondition=<%=searchCondition %>&searchKeyword=<%=searchKeyword %>"><%=i %></a>
+					
+		<%} %>
+		
+		<%if(resultPage.getCurrentPage() < resultPage.getEndUnitPage()){ %>
+			<a href="/listProduct.do?page=<%=resultPage.getEndUnitPage()+1%>&menu=<%=request.getParameter("menu")%>">▷</a>
 		<%} %>
 			
+		<% if(resultPage.getEndUnitPage() <resultPage.getMaxPage()) {%>
+			<a href="/listProduct.do?page=<%=resultPage.getMaxPage()%>&menu=<%=request.getParameter("menu")%>">▶</a>
+		<%} %>
+		
+		
+		 
 		
 		</td>
 	</tr>

@@ -51,25 +51,26 @@ public class ProductDAO {
 
 	public HashMap<String,Object> getProductList(Search searchVO) throws Exception{
 		
-		HashMap<String,Object> map = new HashMap<String,Object>();
+		
 		Connection con = DBUtil.getConnection();
 		
-		String sql = "select * from PRODUCT ";
+		String sql = "select p.prod_no,p.prod_name ,p.prod_detail, p.manufacture_day,p.price,p.image_file,p.reg_date ,t.tran_status_code"
+				+ " from product p, transaction t"
+				+ " where p.prod_no = t.prod_no(+)";
 		if(searchVO.getSearchCondition() != null) {
 			if(searchVO.getSearchCondition().equals("0")) {
 				System.out.println("라랄라라라랄");
-				sql += "where PROD_NO like '%" + searchVO.getSearchKeyword()+"%' ";
+				sql += "AND p.PROD_NO like '%" + searchVO.getSearchKeyword()+"%' ";
 			}else if(searchVO.getSearchCondition().equals("1")) {
-				sql += "where PROD_NAME like '%" + searchVO.getSearchKeyword()+"%' ";
+				sql += "AND p.PROD_NAME like '%" + searchVO.getSearchKeyword()+"%' ";
 			}else if(searchVO.getSearchCondition().equals("2")) {
-				sql += "where PRICE like '%" + searchVO.getSearchKeyword()+"%' ";
+				sql += "AND p.PRICE like '%" + searchVO.getSearchKeyword()+"%' ";
 			}
 		}
 			//SearchCondition은 앞에 선택하는부분 , Keyword 는 뒤에 검색할거 적는 부분
 	
 		sql += "ORDER BY PROD_NO";
 		System.out.println("ProductDAO :: sql " + sql);
-		
 		
 		int total = this.getTotalCount(sql);
 		System.out.println("Product :: totalcount "+total);
@@ -80,9 +81,13 @@ public class ProductDAO {
 		
 		System.out.println(searchVO);
 		
+		HashMap<String,Object> map = new HashMap<String,Object>();
+		map.put("count", new Integer(total));
+		
 		ArrayList<Product> list = new ArrayList<Product>();
 		
 		while(rs.next()) {
+			// rs.next: sql문을 통해 얻은 데이터에서 첫번째 행에서 마지막행까지 추출할때 사용
 			System.out.println("라랄라라라랄");
 				Product vo = new Product();
 				vo.setProdNo(rs.getInt("PROD_NO"));
@@ -92,12 +97,29 @@ public class ProductDAO {
 				vo.setFileName(rs.getString("IMAGE_FILE"));
 				vo.setProdDetail(rs.getString("PROD_DETAIL"));
 				vo.setRegDate(rs.getDate("REG_DATE"));
+				String TranCode = rs.getString("tran_status_code");
+				
+				System.out.println(":::::"+TranCode);
+				
+				if(TranCode != null) {
+					TranCode = TranCode.trim();
+				}
+				
+				if(TranCode == null) {
+					vo.setProTranCode("판매중");
+				}else if(TranCode.equals("0")) {
+					vo.setProTranCode("판매완료");
+				}else if(TranCode.equals("1")) {
+					vo.setProTranCode("배송중");
+				}else if(TranCode.equals("2")){
+					vo.setProTranCode("배송완료");
+				}
 				
 				list.add(vo);					
 		}
 		
 		
-		map.put("count", new Integer(total));
+		
 		map.put("list",list);
 		
 		con.close();
@@ -118,10 +140,11 @@ public class ProductDAO {
 		
 		
 		stmt.setString(1, productVO.getProdName());
-		stmt.setString(2, productVO.getManuDate());
-		stmt.setInt(3, productVO.getPrice());
-		stmt.setString(4, productVO.getFileName());
-		stmt.setString(5, productVO.getProdDetail());
+		stmt.setString(2, productVO.getProdDetail());
+		stmt.setString(3, productVO.getManuDate());
+		stmt.setInt(4, productVO.getPrice());
+		stmt.setString(5, productVO.getFileName());
+		
 		
 		stmt.executeUpdate();
 		

@@ -7,21 +7,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.model2.mvc.common.SearchVO;
+import com.model2.mvc.common.Search;
 import com.model2.mvc.common.util.DBUtil;
+import com.model2.mvc.service.domain.Product;
+import com.model2.mvc.service.domain.Purchase;
 import com.model2.mvc.service.product.ProductService;
 import com.model2.mvc.service.product.impl.ProductServiceImpl;
-import com.model2.mvc.service.product.vo.ProductVO;
 import com.model2.mvc.service.purchase.PurchaseService;
-import com.model2.mvc.service.purchase.impl.PurchaseServiceImpl;
-import com.model2.mvc.service.purchase.vo.PurchaseVO;
 import com.model2.mvc.service.user.UserService;
 import com.model2.mvc.service.user.impl.UserServiceImpl;
 
 
 public class PurchaseDAO {
 	
-	public void addPurchase(PurchaseVO purchase) throws Exception{
+	public void addPurchase(Purchase purchase) throws Exception{
 		
 		Connection con = DBUtil.getConnection();
 		
@@ -29,7 +28,7 @@ public class PurchaseDAO {
 				+ "(seq_transaction_tran_no.nextval,?,?,?,?,?,?,?,?,sysdate,?)";
 					
 		PreparedStatement stmt = con.prepareStatement(sql);
-		//Pruco sprco = purchasevo.get(); 미리 user랑 purchase 불러와서 사용가능
+		//Pruco sprco = Purchase.get(); 미리 user랑 purchase 불러와서 사용가능
 		
 		stmt.setInt(1, purchase.getPurchaseProd().getProdNo());
 		stmt.setString(2, purchase.getBuyer().getUserId());
@@ -49,7 +48,7 @@ public class PurchaseDAO {
 		}		
 	
 	
-	public PurchaseVO getPurchase(int tranNo) throws Exception{
+	public Purchase getPurchase(int tranNo) throws Exception{
 		
 		Connection con = DBUtil.getConnection();
 		
@@ -60,14 +59,14 @@ public class PurchaseDAO {
 		
 		ResultSet rs = stmt.executeQuery();
 		
-		PurchaseVO purchase = null;
+		Purchase purchase = null;
 		
 		ProductService service = new ProductServiceImpl();
 		UserService servicee = new UserServiceImpl();
 		
 		
 		while(rs.next()) {
-			purchase = new PurchaseVO();
+			purchase = new Purchase();
 			
 			purchase.setTranNo(rs.getInt("tran_no"));
 			purchase.setPurchaseProd(service.getProduct(rs.getInt("prod_no")));
@@ -88,47 +87,39 @@ public class PurchaseDAO {
 		return purchase;
 	}
 	
-	public HashMap<String,Object> getPurchaseList(SearchVO search) throws Exception{
+	public HashMap<String,Object> getPurchaseList(Search search) throws Exception{
 		
 		Connection con = DBUtil.getConnection();
 		
 		String sql = "select  buyer_id, demailaddr, "
 				+ "TO_CHAR(dlvy_date, 'YYYY-MM-DD') dlvy_date, "
 				+ "dlvy_request, order_data,payment_option ,receiver_name,"
-				+ "receiver_phone, 	tran_status_code, tran_no,prod_no "
+				+ "receiver_phone,tran_status_code, tran_no,prod_no "
 				+ "FROM transaction";
 		
-		PreparedStatement stmt = con.prepareStatement( sql,ResultSet.TYPE_SCROLL_INSENSITIVE,
-														ResultSet.CONCUR_UPDATABLE);
+	
+		int total = this.getTotalCount(sql);
+		
+		sql = makeCurrentPageSql(sql,search);
+		
+		PreparedStatement stmt = con.prepareStatement(sql);
 		
 		ResultSet rs = stmt.executeQuery();
 		
-		rs.last();
-		int total = rs.getRow();
-		System.out.println("로우" + total);
-		
-		HashMap<String,Object> map = new HashMap<String,Object>();
-		
-		map.put("count",new Integer(total));
-		
-		rs.absolute(search.getPage() * search.getPageUnit() - search.getPageUnit()+1);
-		System.out.println("searchVO.getPage():" + search.getPage());
-		System.out.println("searchVO.getPageUnit():" + search.getPageUnit());
-		
-		ArrayList<PurchaseVO> list = new ArrayList<PurchaseVO>();
+		HashMap<String,Object> map = new HashMap<String,Object>();	
+		ArrayList<Purchase> list = new ArrayList<Purchase>();
 		
 		ProductService proservice = new ProductServiceImpl();
 		UserService uservice = new UserServiceImpl();
 		
-		if(total>0) {
-			for(int i =0 ; i< search.getPageUnit() ; i++) {
-				PurchaseVO pur= new PurchaseVO();
+		while(rs.next()) {
+			
+				Purchase pur= new Purchase();
 				pur.setTranNo(rs.getInt("tran_no"));
 				pur.setPurchaseProd(proservice.getProduct(rs.getInt("prod_no")));
 				pur.setBuyer(uservice.getUser(rs.getString("buyer_id")));
 				pur.setReceiverName(rs.getString("receiver_name"));
 				pur.setReceiverPhone(rs.getString("receiver_phone"));
-				
 				String TranCode = rs.getString("tran_status_code").trim();
 				
 				//null 은 없어.... 프로덕트만... 구매안하면 안생기니까 없는거야...
@@ -148,16 +139,24 @@ public class PurchaseDAO {
 //				}
 			}
 			
-			System.out.println("list사이즈 :"+list.size());
+			
 			map.put("list",list);
+			System.out.println("list사이즈 :"+list.size());
+			
+			map.put("count",new Integer(total));
 			System.out.println("map사이즈 :"+map.size());
 			
+			rs.close();
+			stmt.close();
 			con.close();
+			
+			
+			return map;
 		}	
 		
-		return map;
 		
-	}
+		
+	
 //	public HashMap<String, Object> getSaleList(SearchVO search) throws Exception {
 //		
 //		Connection con = DBUtil.getConnection();
@@ -170,7 +169,7 @@ public class PurchaseDAO {
 //		return null;
 //	}
 	
-	public PurchaseVO updatePurchase(PurchaseVO purchase) throws Exception{
+	public Purchase updatePurchase(Purchase purchase) throws Exception{
 		
 		Connection con = DBUtil.getConnection();
 		
@@ -192,12 +191,13 @@ public class PurchaseDAO {
 		stmt.executeUpdate();
 		
 		con.close();
+		stmt.close();
 		
 		
 		return purchase;
 	}
 	
-	public void updateTranCode(PurchaseVO purchase) throws Exception {
+	public void updateTranCode(Purchase purchase) throws Exception {
 		
 		Connection con = DBUtil.getConnection();
 		
@@ -207,13 +207,13 @@ public class PurchaseDAO {
 		PreparedStatement stmt = con.prepareStatement(sql);
 		
 		stmt.setInt(1, purchase.getTranNo());
-		
 		stmt.executeUpdate();
 		
 		con.close();
 		
 	}
-	public void updateTranCodeByProd(ProductVO product) throws Exception {
+	
+	public void updateTranCodeByProd(Product product) throws Exception {
 		//해당 물건리스트 중에서 판매완료된 애들 배송시작하는 버튼 누르는 액션
 		
 		Connection con = DBUtil.getConnection();
@@ -228,8 +228,46 @@ public class PurchaseDAO {
 		stmt.executeUpdate();
 		
 		con.close();
+		stmt.close();
 		
 	}
+	
+	private String makeCurrentPageSql(String sql, Search search) {
+		//페이지수
+		
+		sql = "SELECT * FROM "
+				+ "( SELECT inner_table.* , ROWNUM rnum " 
+				+ "FROM ( "+sql+" ) inner_table "
+				+ "WHERE ROWNUM <= " +search.getCurrentPage() * search.getPageSize()+") "
+				+ "WHERE rnum BETWEEN "+((search.getCurrentPage()-1) * search.getPageSize()+1)+ " AND " + search.getCurrentPage() * search.getPageSize();
+		
+			System.out.println("ProductDAO :: make SQL :: "+ sql);
+			
+			return sql;
+	}
+	
+	private int getTotalCount(String sql) throws Exception{
+		
+		sql = "SELECT COUNT(*) "+
+				"FROM ("+sql+") countTable";
+		
+		Connection con = DBUtil.getConnection();
+		PreparedStatement pStmt = con.prepareStatement(sql);
+		ResultSet rs = pStmt.executeQuery();
+		
+		
+		int totalCount = 0;
+		if(rs.next()) {
+			totalCount = rs.getInt(1);
+		}
+		
+		pStmt.close();
+		con.close();
+		rs.close();
+		
+		return totalCount;	
+	}
+	
 
 	
 	

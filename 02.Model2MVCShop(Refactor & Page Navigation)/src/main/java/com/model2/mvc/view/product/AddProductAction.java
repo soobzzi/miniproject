@@ -31,6 +31,8 @@ public class AddProductAction extends Action {
 		
 		request.setAttribute("vo", productVO);
 		
+		System.out.println("product :: "+productVO);
+		
 		return "forward:/product/addProduct.jsp";
 	}
 
