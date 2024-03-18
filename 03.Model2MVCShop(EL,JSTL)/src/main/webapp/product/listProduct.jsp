@@ -199,7 +199,17 @@ function fncGetProductList(currentPage){
 				<td align="left">
 			
 				
-					판매중
+			<% System.out.println("tranCode : "+ product.getProTranCode()); %>
+			
+			<% if(vo.getProTranCode().equals("판매완료")&&(product.equals("manage")&&(menu != null))) {%>
+			<a href="/updateTranCodeByProd.do?prodNo=<%= product.getProdNo()%>">배송하기</a>
+			
+			<%}else if(product.getProTranCode().equals("판매중")&&(menu != null)) {%>
+			 판매중
+			
+			<%}else{ %>
+			 재고없음
+			<%}%>
 				
 					</td>	
 			</tr>

@@ -24,7 +24,7 @@ public class GetProductAction extends Action {
 		ProductService service = new ProductServiceImpl();
 		Product vo = service.getProduct(prodNo);
 		
-		request.setAttribute("vo", vo);
+		request.setAttribute("product", vo);
 		
 		String menu = request.getParameter("menu");
 		
