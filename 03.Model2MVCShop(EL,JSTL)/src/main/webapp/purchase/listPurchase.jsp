@@ -32,7 +32,7 @@
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
 <script type="text/javascript">
-	function fncGetPurchaseList() {
+	function fncGetPurchseList() {
 		document.detailForm.submit();
 	}
 </script>
@@ -127,27 +127,7 @@
 		<td align="center">
 		
 			
-		<% if(resultPage.getBeginUnitPage() > 1) {%>
-			<a href="/listProduct.do?page=1&menu=<%=request.getParameter("menu")%>"> ¢¸ </a>
-		<%} %>
-		
-		<% if(resultPage.getCurrentPage() > 1) {%>
-			<a href="/listProduct.do?page=<%=resultPage.getCurrentPage()-1%>&menu=<%=request.getParameter("menu")%>"> ¢· </a>
-		<%} %>
-		
-		<% for(int i = resultPage.getBeginUnitPage() ; i <= resultPage.getEndUnitPage() ; i++){ %>
-			<a href="/listProduct.do?page=<%=i %>&menu=<%=menu%>&searchCondition=<%=searchCondition %>&searchKeyword=<%=searchKeyword %>"><%=i %></a>
-					
-		<%} %>
-		
-		<%if(resultPage.getCurrentPage() < resultPage.getEndUnitPage()){ %>
-			<a href="/listProduct.do?page=<%=resultPage.getEndUnitPage()+1%>&menu=<%=request.getParameter("menu")%>">¢¹</a>
-		<%} %>
-			
-		<% if(resultPage.getEndUnitPage() <resultPage.getMaxPage()) {%>
-			<a href="/listProduct.do?page=<%=resultPage.getMaxPage()%>&menu=<%=request.getParameter("menu")%>">¢º</a>
-		<%} %>
-		
+	<jsp:include page="../common/pageNavigator.jsp"/>
 		
 		 
 		

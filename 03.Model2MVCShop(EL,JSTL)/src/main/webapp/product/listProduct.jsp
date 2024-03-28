@@ -24,6 +24,7 @@
 	String menu = request.getParameter("menu");
 --%>
 
+
 <html>
 <head>
 <title>상품 목록조회</title>
@@ -31,13 +32,13 @@
 <link rel="stylesheet" href="/css/admin.css" type="text/css">
 
 <script type="text/javascript">
-<!--
-function fncGetProductList(currentPage){
+
+function fncGetList(currentPage){
 	document.getElementById("currentPage").value = currentPage;
 	
 	document.detailForm.submit();
 }
--->
+
 </script>
 </head>
 
@@ -45,7 +46,7 @@ function fncGetProductList(currentPage){
 
 <div style="width:98%; margin-left:10px;">
 
-<form name="detailForm" action="/listProduct.do?menu=manage" method="post">
+<form name="detailForm" action="/listProduct.do?menu=${param.menu}" method="post">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>
@@ -175,12 +176,7 @@ function fncGetProductList(currentPage){
 	<tr>
 		<td colspan="11" bgcolor="808285" height="1"></td>
 	</tr>
-	
-	<%-- 	
-		int no=list.size();
-		for(int i=0; i<list.size(); i++) {
-			Product vo = (Product)list.get(i);
-	--%>
+
 	
 		<c:set var="i" value ="0"/>	 <%--초기화 --%>
 		<c:forEach var ="product" items="${map.list}"><%-- 프로덕트에서 리스트가져와서 리스트만큼 돌리기 --%>
@@ -197,21 +193,22 @@ function fncGetProductList(currentPage){
 				<td align="left">${product.manuDate}</td>
 				<td></td>
 				<td align="left">
+		 
 			
-				
-			<% System.out.println("tranCode : "+ product.getProTranCode()); %>
+
+			<c:choose>
+    			<c:when test="${product.proTranCode eq '판매완료' and not empty param.menu and param.menu eq 'manage'}">
+       				 <a href="/updateTranCodeByProd.do?prodNo=${product.prodNo}">배송하기</a>
+   				</c:when>
+    			<c:when test="${product.proTranCode eq '판매중' and not empty param.menu}">
+				판매중
+				</c:when>
+				<c:otherwise>
+				재고없음
+				</c:otherwise>
+			</c:choose>
 			
-			<% if(vo.getProTranCode().equals("판매완료")&&(product.equals("manage")&&(menu != null))) {%>
-			<a href="/updateTranCodeByProd.do?prodNo=<%= product.getProdNo()%>">배송하기</a>
-			
-			<%}else if(product.getProTranCode().equals("판매중")&&(menu != null)) {%>
-			 판매중
-			
-			<%}else{ %>
-			 재고없음
-			<%}%>
-				
-					</td>	
+			</td>	
 			</tr>
 			<tr>
 				<td colspan="11" bgcolor="D6D7D6" height="1"></td>
@@ -223,34 +220,7 @@ function fncGetProductList(currentPage){
 	<tr>
 		<td align="center">
 		 <input type="hidden" id="currentPage" name="currentPage" value=""/>
-		
-		<%-- 
-		<% if(resultPage.getBeginUnitPage() > 1) {%>
-			<a href="/listProduct.do?page=1&menu=<%=request.getParameter("menu")%>"> ◀ </a>
-		<%} %>
-		
-		<% if(resultPage.getCurrentPage() > 1) {%>
-			<a href="/listProduct.do?page=<%=resultPage.getCurrentPage()-1%>&menu=<%=request.getParameter("menu")%>"> ◁ </a>
-		<%} %>
-		
-		<% for(int i = resultPage.getBeginUnitPage() ; i <= resultPage.getEndUnitPage() ; i++){ %>
-			<% if(searchCondition != null && searchKeyword != null) {%>
-			<a href="/listProduct.do?page=<%=i %>&menu=<%=menu%>&searchCondition=<%=searchCondition %>&searchKeyword=<%=searchKeyword %>"><%=i %></a>
-			
-			<%}else{ %>
-			<a href="/listProduct.do?page=<%=i %>&menu=<%=menu%>"></a>
-			<%} %>
-		<%} %>
-		
-		<%if(resultPage.getCurrentPage() < resultPage.getEndUnitPage()){ %>
-			<a href="/listProduct.do?page=<%=resultPage.getEndUnitPage()+1%>&menu=<%=request.getParameter("menu")%>">▷</a>
-		<%} %>
-			
-		<% if(resultPage.getEndUnitPage() <resultPage.getMaxPage()) {%>
-			<a href="/listProduct.do?page=<%=resultPage.getMaxPage()%>&menu=<%=request.getParameter("menu")%>">▶</a>
-		<%} %>
-		
-		--%>
+	
 		
 		<jsp:include page="../common/pageNavigator.jsp"/>
  

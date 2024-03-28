@@ -1,0 +1,90 @@
+
+/* �̹��� �������� ���� */
+IMG {  border-style: none}
+
+/* ��ũ�ѹ� ���� */
+BODY {
+scrollbar-3dlight-color: #ffffff;
+scrollbar-highlight-color: #ffffff;
+scrollbar-face-color: #DEE7EB;
+scrollbar-arrow-color: #6F9BAA;
+scrollbar-track-color: #F7F7F7;
+scrollbar-darkshadow-color: #ffffff;
+scrollbar-shadow-color: #B8C4C5;}
+
+
+a.menu		{ font-size: 9pt; font-family: ����ü; color: #ff0000; text-decoration: none; }
+
+/* ��ũ �Ӽ� */
+A.:link {  color: #333333 ; text-decoration: none; cursor:hand}
+/* 방문하지 않은 링크에 스타일 적용 , text-decoration:none은 밑줄 제거해서 링크텍스트에 밑줄 표시 안되게 하는거 , 커서모양 손가락으로 하기*/
+A.:hover {  color: #347BD9 ;text-decoration: none; }
+/*링크에 마우스 올렸을때 스타일 정의 하는거 */
+A.:active {  color: #347BD9 ; text-decoration: none;}
+/*링크 클릭했을때 */
+A.:visited {  color: #333333 ; text-decoration: none;}
+/*방문한 링크에 스타일 적용*/
+A.: { onfocus : "this.blur();" }
+/*포커스 제거*/
+
+
+/* ��ü �ؽ�Ʈ �Ӽ� */
+BODY, TABLE, TR, TD, SELECT,INPUT,DIV,SPAN,FORM,TEXTAREA
+{ font-family: "MS Gothic"; font-size: 12px; color: #333333; }
+
+/* Ÿ��Ʋ1 ����̹����� �ؽ�Ʈ �Ӽ� */
+ .Depth01 { 
+		font-size: 14px; 
+	color: #ffffff;
+	font-weight:bold;
+	line-height: 26px;
+	text-indent: 15px;
+	background-image: url(/sample/images/left/leftMenuDep01Bg.gif);
+	background-repeat:no-repeat;
+   	}
+ 
+ 	 /* Ÿ��Ʋ2 ����̹����� �ؽ�Ʈ �Ӽ� - ���콺 �̺�Ʈ�� �������� �⺻�϶�.*/
+	.Depth02on { 
+	font-size: 12px; 
+	line-height: 25px;
+	color: #505050;
+	font-weight:normal;
+	text-indent: 19px;
+	background-image: url(/sample/images/left/leftMenuDep02_on.gif);
+	background-repeat:no-repeat;
+  	}
+  
+   /* Ÿ��Ʋ2 ����̹����� �ؽ�Ʈ �Ӽ� - ���콺 �̺�Ʈ�� �������� �⺻�϶�.*/
+	.Depth02off { 
+	 font-size: 12px; 
+	line-height: 25px;
+	color: #505050;
+	font-weight:normal;
+	text-indent: 19px;
+	background-image: url(/sample/images/left/leftMenuDep02_off.gif);
+	background-repeat:no-repeat;
+  	}
+
+/* Ÿ��Ʋ3 ����̹����� �ؽ�Ʈ �Ӽ� */
+	.Depth03 { 
+	font-size: 12px; 
+	line-height: 20px;
+	color: #505050;
+	font-weight:normal;
+	text-indent: 14px;
+	background-image: url(/sample/images/left/leftMenuDep03Bg.gif);
+	background-repeat:no-repeat;
+ 	}
+
+	.DepthEnd {
+background-image: url(/sample/images/left/space_line.gif);
+line-height: 5px;
+background-repeat:no-repeat;
+	}
+	
+/* Ÿ��Ʋ1 ����̹����� �ؽ�Ʈ �Ӽ� */	
+.layer_submenu_bg {
+	background-image:  url(/sample/images/left/menuLayerBg.gif);
+	background-position: right;
+	background-repeat: repeat;
+	text-align: center;

@@ -32,7 +32,7 @@ public class UpdateProductAction extends Action {
 		int prodNo = Integer.parseInt(request.getParameter("prodNo"));
 		productVO.setProdNo(prodNo);
 		productVO.setProdName(request.getParameter("prodName"));
-		productVO.setManuDate(request.getParameter("manuDate").replaceAll("-", ""));
+		productVO.setManuDate(request.getParameter("manuDate"));
 		int price = Integer.parseInt(request.getParameter("price"));
 		productVO.setPrice(price);
 		productVO.setFileName(request.getParameter("fileName"));

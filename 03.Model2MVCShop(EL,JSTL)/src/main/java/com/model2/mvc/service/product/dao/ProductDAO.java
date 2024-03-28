@@ -59,7 +59,6 @@ public class ProductDAO {
 				+ " where p.prod_no = t.prod_no(+)";
 		if(searchVO.getSearchCondition() != null) {
 			if(searchVO.getSearchCondition().equals("0")) {
-				System.out.println("라랄라라라랄");
 				sql += "AND p.PROD_NO like '%" + searchVO.getSearchKeyword()+"%' ";
 			}else if(searchVO.getSearchCondition().equals("1")) {
 				sql += "AND p.PROD_NAME like '%" + searchVO.getSearchKeyword()+"%' ";
@@ -88,7 +87,6 @@ public class ProductDAO {
 		
 		while(rs.next()) {
 			// rs.next: sql문을 통해 얻은 데이터에서 첫번째 행에서 마지막행까지 추출할때 사용
-			System.out.println("라랄라라라랄");
 				Product vo = new Product();
 				vo.setProdNo(rs.getInt("PROD_NO"));
 				vo.setProdName(rs.getString("PROD_NAME"));

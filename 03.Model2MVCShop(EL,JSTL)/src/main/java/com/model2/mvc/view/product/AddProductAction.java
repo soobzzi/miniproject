@@ -29,7 +29,9 @@ public class AddProductAction extends Action {
 		ProductService service = new ProductServiceImpl();
 		service.addProduct(productVO);
 		
-		request.setAttribute("product", productVO);
+		request.setAttribute("vo", productVO);
+		
+		System.out.println("product :: "+productVO);
 		
 		return "forward:/product/addProduct.jsp";
 	}

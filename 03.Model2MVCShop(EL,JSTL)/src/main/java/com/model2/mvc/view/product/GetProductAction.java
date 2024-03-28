@@ -22,9 +22,9 @@ public class GetProductAction extends Action {
 		int prodNo = Integer.parseInt(request.getParameter("prodNo"));
 		
 		ProductService service = new ProductServiceImpl();
-		Product vo = service.getProduct(prodNo);
+		Product product = service.getProduct(prodNo);
 		
-		request.setAttribute("product", vo);
+		request.setAttribute("product", product);
 		
 		String menu = request.getParameter("menu");
 		
@@ -68,7 +68,7 @@ public class GetProductAction extends Action {
 		}else {	
 			history = cookies[index].getValue();
 					//업데이트된 벨류값을 히스토리에저장
-					history += ":"+ vo.getProdNo();
+					history += ":"+ product.getProdNo();
 					cookies[index].setValue(history);
 					//업데이트된 히스토리를 담아서 보내줌
 					response.addCookie(cookies[index]);

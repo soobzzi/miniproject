@@ -23,6 +23,8 @@ public class AddPurchaseAction extends Action{
 		User user = (User)session.getAttribute("user");
 		//유저가져오기
 		
+		
+		
 		product.setProdNo(Integer.parseInt(request.getParameter("prodNo")));
 		purchase.setBuyer(user);
 		purchase.setPaymentOption(request.getParameter("paymentOption"));
@@ -38,7 +40,7 @@ public class AddPurchaseAction extends Action{
 		
 		purchase.setPurchaseProd(product);
 		
-		
+		System.out.println("prodNo");
 		
 		//Impl 불러오기
 		PurchaseService service = new PurchaseServiceImpl();

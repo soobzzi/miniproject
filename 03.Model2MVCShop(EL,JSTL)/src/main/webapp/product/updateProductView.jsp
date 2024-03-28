@@ -91,7 +91,7 @@ function fncAddProduct(){
 				<tr>
 					<td width="105">
 						<input 	type="text" name="prodName" class="ct_input_g" 
-										style="width: 100px; height: 19px" maxLength="20" value="${product.prodName}">
+										style="width: 100px; height: 19px" maxLength="20" value="${product.prodName}"/>
 					</td>
 				</tr>
 			</table>

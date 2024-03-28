@@ -26,6 +26,7 @@ public class AddPurchaseViewAction extends Action {
 	
 		
 		System.out.println("prodNo : "+request.getParameter("prodNo"));
+		
 		Purchase purchase = new Purchase();
 		ProductService service = new ProductServiceImpl();
 		int prodNo = Integer.parseInt(request.getParameter("prodNo"));

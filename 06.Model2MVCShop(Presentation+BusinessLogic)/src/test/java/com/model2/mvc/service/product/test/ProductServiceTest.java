@@ -42,7 +42,7 @@ public class ProductServiceTest {
 		
 		productService.addProduct(product);
 		
-		product = productService.getProduct("¡§«—¿Ã¿«∏∆∫œ");
+		product = productService.getProduct(10000);
 		
 		
 		System.out.println(product);
@@ -62,7 +62,7 @@ public class ProductServiceTest {
 		
 		Product product = new Product();
 		
-		product = productService.getProduct("¡§«—¿Ã¿«∏∆∫œ");
+		product = productService.getProduct(10000);
 		
 		System.out.println("getget"+product);
 		
@@ -72,13 +72,13 @@ public class ProductServiceTest {
 		Assert.assertEquals(100, product.getPrice());
 		Assert.assertEquals("macbookfile", product.getFileName());
 		
-		Assert.assertNotNull(productService.getProduct("¿⁄¿¸∞≈"));
+		Assert.assertNotNull(productService.getProduct(10000));
 	}
 	
 	//@Test
 	public void testUpdateProduct() throws Exception{
 		
-		Product product = productService.getProduct("¡§«—¿Ã¿«∏∆∫œ");
+		Product product = productService.getProduct(10000);
 		
 		System.out.println(product);
 		
@@ -97,7 +97,7 @@ public class ProductServiceTest {
 		
 		productService.updateProduct(product);
 		
-		product = productService.getProduct("¡§«—¿Ã¿«∏∆∫œ");
+		product = productService.getProduct(10000);
 		Assert.assertNotNull(product);
 		
 		Assert.assertEquals("¡ﬂ∞Ìb±ﬁ", product.getProdDetail());

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PurchaseMapper">
+ 	
+ 	
+	<resultMap id="purchaseSelectMap" type="purchase">
+		<result property="tranNo" 			column="tran_no" 			jdbcType="INTEGER"/>
+		<result property="prodNo"			column="prod_no" 			jdbcType="INTEGER" />
+		<result property="buyerId" 			column="buyer_id" 			jdbcType="VARCHAR" />
+		<result property="paymentOption" 	column="payment_option" 	jdbcType="CHARACTER" />
+		<result property="receiverName" 	column="receiver_name" 		jdbcType="VARCHAR" />
+		<result property="receiverPhone" 	column="receiver_phone" 	jdbcType="VARCHAR" />
+		<result property="demailAddr" 		column="demailaddr" 		jdbcType="VARCHAR" />
+		<result property="dlvyRequest" 		column="dlvy_request" 		jdbcType="VARCHAR" />
+		<result property="tranCode" 		column="tran_staus_code" 	jdbcType="CHARACTER" />
+		<result property="orderData" 		column="ordr_data" 			jdbcType="DATE" />
+		<result property="dlvyDate" 		column="dlvy_date" 			jdbcType="DATE" />
+	</resultMap>
+	
+	<!-- SQL : INSERT -->
+	<insert 	id="addPurchase"		parameterType="purchase" >
+	 	INSERT
+	 	INTO purchase(prod_no, buyer_id, payment_option, receiver_name, receiver_phone, demailaddr, dlvy_request, tran_status_code, dlvy_date)
+		VALUES	 (	seq_product_prod_no.nextval , #{buyerId} , #{paymentOption:} , #{receiverName:VARCHAR} , 
+							#{price:NUMERIC} , #{fileName:VARCHAR} , SYSDATE )
+	 </insert>
+	 
+	 <!-- SQL : SELECT ONE -->
+	 <select 	id="getProduct"	parameterType="string"	resultMap="productSelectMap">
+		SELECT
+		prod_no, prod_name, prod_detail, manufacture_day, price, image_file, reg_date 		
+		FROM product 
+		WHERE prod_name = #{value}
+	 </select>
+	 
+	 <!-- SQL : UPDATE -->
+	 <update	id="updateProduct"	parameterType="product" >
+	   	UPDATE product
+	   	<set>
+	   		prod_name 		= #{prodName} ,
+			manufacture_day	= #{manuDate},
+			price 			= #{price} ,
+			image_file		= #{fileName}
+	   	</set>
+	   	WHERE prod_no = #{prodNo}
+	 </update>
+		 
+	<!-- SQL : SELECT LIST -->
+	<select  id="getProductList"  parameterType="search"	resultMap="productSelectMap">
+	  	SELECT *
+	  	FROM (	SELECT inner_table.* , ROWNUM as rnum
+	  					FROM		(	SELECT prod_no , prod_name , price 
+											FROM product
+											<if test="searchCondition != null">
+												<where>
+													<if test="searchCondition == 0 and searchKeyword !='' ">
+										 				prod_no = #{searchKeyword}
+													</if>
+													<if test="searchCondition == 1 and searchKeyword !='' ">
+										 				prod_name = #{searchKeyword}
+													</if>
+													<if test = "searchCondition == 3 and searchKeyword !='' ">
+														price = #{searchKeyword}
+													</if>
+												</where>
+											</if>
+											ORDER BY prod_no )inner_table
+						WHERE ROWNUM &lt;= #{endRowNum} )
+		WHERE rnum BETWEEN #{startRowNum} AND #{endRowNum} 
+	 </select>
+	 	<!--  위 두번째 subQuery 의  
+	 			WHERE ROWNUM &lt;= #{endRowNum} ) 는
+	 			WHERE ROWNUM <= #{endRowNum} ) 의미이며..
+	 			< 는 keyword 로 &lt; 를	사용.
+	 			
+	 			<![CDATA[  ~~~  ]]> 를 이용하여 아래와 같이 사용  할 수 있다.
+	 			CDATA ==> Character Data 의 의미 Java 에서 \n 같은 특수문자 처리  
+
+				WHERE ROWNUM <![CDATA[ <=]]> #{endRowNum} )
+		-->
+	
+	<!-- SQL : SELECT ROW Count -->	 
+	 <select  id="getTotalCount"  parameterType="search"	 resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM  (	 SELECT prod_no , prod_name , price 
+				 FROM product
+					<if test="searchCondition != null">
+						<where>
+							<if test="searchCondition == 0 and searchKeyword !='' ">
+				 				prod_no = #{searchKeyword}
+							</if>
+							<if test="searchCondition == 1 and searchKeyword !='' ">
+				 				prod_name = #{searchKeyword}
+							</if>
+							<if test = "searchCondition == 3 and searchKeyword !='' ">
+								price = #{searchKeyword}
+							</if>
+						</where>
+					</if>) countTable						
+	 </select>
+	 
+</mapper>

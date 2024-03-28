@@ -5,8 +5,7 @@
 
 	
 
-	<c:if test = "${resultPage.beginUnitPage > 1}">
-		
+	<c:if test = "${resultPage.currentPage > 1}">
 			<a href="javascript:fncGetList('${'1'}')">[첫페이지]</a>
 	</c:if>
 	
