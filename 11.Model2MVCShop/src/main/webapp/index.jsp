@@ -27,9 +27,15 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" ></script>
+	<link href="/css/index.css" rel="stylesheet">
 	
 	<!--  ///////////////////////// CSS ////////////////////////// -->
-	<style></style>
+	<style>
+       body > div.container{
+        	
+            margin-top: 100px;
+        }
+    </style>
    	
    	<!--  ///////////////////////// JavaScript ////////////////////////// -->
 	<script type="text/javascript">
@@ -50,6 +56,14 @@
 			});
 		});
 		
+		//============= 상품검색 화면이동 =============
+		$( function() {
+			//==> 추가된부분 : "addUser"  Event 연결
+			$("a[href='#' ]:contains('상품검색')").on("click" , function() {
+				self.location = "/product/listProduct"
+			});
+		});
+		
 	</script>	
 	
 </head>
@@ -57,7 +71,7 @@
 <body>
 
 	<!-- ToolBar Start /////////////////////////////////////-->
-	<div class="navbar  navbar-default">
+	<div class="navbar navbar-fixed-top">
 		
         <div class="container">
         
@@ -95,11 +109,11 @@
 			<div class="col-md-3">
 		        
 		       	<!--  회원관리 목록에 제목 -->
-				<div class="panel panel-primary">
+			<!-- <div class="panel panel-primary">
 					<div class="panel-heading">
 						<i class="glyphicon glyphicon-heart"></i> 회원관리
          			</div>
-         			<!--  회원관리 아이템 -->
+         			<!--  회원관리 아이템 
 					<ul class="list-group">
 						 <li class="list-group-item">
 						 	<a href="#">개인정보조회</a> <i class="glyphicon glyphicon-ban-circle"></i>
@@ -124,13 +138,13 @@
 						 </li>
 					</ul>
 		        </div>
-               
-               
+               -->  
+            	  
 				<div class="panel panel-primary">
 					<div class="panel-heading">
 							<i class="glyphicon glyphicon-shopping-cart"></i> 상품구매
 	    			</div>
-					<ul class="list-group">
+					<!--  --><ul class="list-group">
 						 <li class="list-group-item"><a href="#">상품검색</a></li>
 						  <li class="list-group-item">
 						  	<a href="#">구매이력조회</a> <i class="glyphicon glyphicon-ban-circle"></i>

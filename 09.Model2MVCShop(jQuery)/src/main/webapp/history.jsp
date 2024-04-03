@@ -25,7 +25,7 @@
 			}
 		}
 		if (history != null) {
-			String[] h = history.split(":");
+			String[] h = history.split(",");
 			for (int i = 0; i < h.length; i++) {
 				if (!h[i].equals("null")) {
 %>

@@ -124,4 +124,28 @@
 			$(self.location).attr("href","/user/getUser?userId=${sessionScope.user.userId}");
 		});
 		
+	 	//=============  상품목록조회 Event  처리 =============	
+	 	$( "a:contains('판매상품관리')" ).on("click" , function() {
+	 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$(self.location).attr("href","/product/listProduct?menu=manage");
+		});
+	 	
+	 	//=============  판매상품등록 Event  처리 =============	
+	 	$( "a:contains('판매상품등록')" ).on("click" , function() {
+	 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$(self.location).attr("href","/product/addProductView.jsp");
+		});
+	 	
+	 	//=============  상품검색 Event  처리 =============	
+	 	$( "a:contains('상 품 검 색')" ).on("click" , function() {
+	 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$(self.location).attr("href","/product/listProduct?menu=search");
+		});
+	 	
+		//=============  상품검색 Event  처리 =============	
+	 	$( "a:contains('구매이력조회')" ).on("click" , function() {
+	 		//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$(self.location).attr("href","/product/getProduct");
+		});
+		
 	</script>  

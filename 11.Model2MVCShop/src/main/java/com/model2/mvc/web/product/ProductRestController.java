@@ -93,11 +93,11 @@ public class ProductRestController {
 	public Map listProduct(@RequestBody Search search, HttpServletRequest request) throws Exception{
 		
 		System.out.println("/product/listProduct :  POST");
-		int page = 1;
+		int currentPage = 1;
 		if(search.getCurrentPage() != 0) 
-			page = search.getCurrentPage();
+			currentPage = search.getCurrentPage();
 		
-		search.setCurrentPage(page);
+		search.setCurrentPage(currentPage);
 		search.setSearchCondition(search.getSearchCondition());
 		search.setSearchKeyword(search.getSearchKeyword());
 		
@@ -107,7 +107,7 @@ public class ProductRestController {
 		
 		
 		//정보를 다 받은후 만들 그래야 리저트페이지 받을수있음
-		Page resultPage = new Page(page,((Integer)(map.get("totalCount"))).intValue(),pageUnit, pageSize);
+		Page resultPage = new Page(currentPage,((Integer)(map.get("totalCount"))).intValue(),pageUnit, pageSize);
 		System.out.println(resultPage);
 		
 		map.put("resultPage",resultPage);

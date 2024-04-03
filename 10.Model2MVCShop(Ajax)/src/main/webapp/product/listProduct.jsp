@@ -42,13 +42,18 @@
 							"Content-Type" : "application/json"
 						},
 						success : function(JSONData , status) {
-
+							
+							alert(status);
+							alert("JSONData : \n"+JSONData);
 							
 							var displayValue = "<h3>"
-														+"상품명: "+JSONData.prodName+"<br/>"
-														+"가 격  : "+JSONData.price+"<br/>"
-														+"현재상태 : "+JSONData.tranCode+"<br/>"
-														+"</h3>";
+														
+								+"상 품 명  : "+JSONData.product.prodName+"<br/>"
+								+"가   격  : "+JSONData.product.price+"<br/>"
+								+"등 록 일 : "+JSONData.product.manuDate+"<br/>"
+								
+								+"</h3>";
+								
 							$("h3").remove();
 							$( "#"+prodNo+"" ).html(displayValue);
 						}

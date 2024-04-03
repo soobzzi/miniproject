@@ -95,6 +95,7 @@ function fncAddProduct(){
 
 <!--  <form name="detailForm" method="post" >-->
 <form name="detailForm" >
+<input type = "hidden" name = "prodNo" value = "${product.prodNo}">
 
 <table width="100%" height="37" border="0" cellpadding="0"	cellspacing="0">
 	<tr>

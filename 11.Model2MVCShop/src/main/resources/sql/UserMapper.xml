@@ -56,10 +56,10 @@
 											<if test="searchCondition != null">
 												<where>
 													<if test="searchCondition == 0 and searchKeyword !='' ">
-										 				user_id = #{searchKeyword}
+										 				user_id like '%'||#{searchKeyword}||'%'
 													</if>
 													<if test="searchCondition == 1 and searchKeyword !='' ">
-										 				user_name = #{searchKeyword}
+										 				user_name like '%'||#{searchKeyword}||'%'
 													</if>
 												</where>
 											</if>
@@ -86,10 +86,10 @@
 						<if test="searchCondition != null">
 							<where>
 								<if test="searchCondition == 0 and searchKeyword !='' ">
-						 			user_id = #{searchKeyword}
+						 			user_id like '%'||#{searchKeyword}||'%'
 								</if>
 								<if test="searchCondition == 1 and searchKeyword !='' ">
-						 		user_name = #{searchKeyword}
+						 		user_name like '%'||#{searchKeyword}||'%'
 								</if>
 							</where>
 						</if> ) countTable						

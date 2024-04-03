@@ -13,12 +13,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.model2.mvc.common.Page;
 import com.model2.mvc.common.Search;
@@ -26,25 +23,28 @@ import com.model2.mvc.service.domain.Product;
 import com.model2.mvc.service.product.ProductService;
 import com.model2.mvc.service.product.impl.ProductServiceImpl;
 
-@RestController
+@Controller
 @RequestMapping("/product/*")
-public class ProductRestController {
+public class ProductController {
 	
 	@Autowired 
 	@Qualifier("productServiceImpl")
 	private ProductService productService;
 	
-	@Value("#{commonProperties['pageUnit']}")
-	int pageUnit;
-	@Value("#{commonProperties['pageSize']}")
-	int pageSize;
-	
-	public ProductRestController() {
+	public ProductController() {
 		System.out.println(this.getClass());
 	}
 	
-	@RequestMapping(value = "/json/addProduct", method = RequestMethod.POST)
-	public Product addProductPost(@RequestBody Product product) throws Exception{
+	@Value("#{commonProperties['pageUnit']}")
+	int pageUnit;
+	
+	@Value("#{commonProperties['pageSize']}")
+	int pageSize;
+	
+	
+	
+	@RequestMapping(value = "addProduct")
+	public String addProduct(@ModelAttribute("product") Product product) throws Exception{
 		
 		System.out.println("/product/addProduct");
 		
@@ -52,47 +52,68 @@ public class ProductRestController {
 		
 		productService.addProduct(product);
 		
-		return product;
+		return "forward:/product/addProduct.jsp";
 	}
 	
-
-	@RequestMapping(value = "/json/addProduct")
-	public Product addProductGet(@ModelAttribute("product") Product product) throws Exception{
+	@RequestMapping(value = "getProduct")
+	public String getProduct(@RequestParam("prodNo") int prodNo ,@RequestParam("menu") String menu, Model model,HttpServletRequest request,HttpServletResponse response)throws Exception{
 		
-		System.out.println("/product/addProduct");
-		
-		product.setManuDate(product.getManuDate().replaceAll("-", ""));
-		
-		productService.addProduct(product);
-		
-		return product;
-	}
-	
-	
-	
-	
-	@RequestMapping(value = "/json/getProduct/{prodNo}" , method = RequestMethod.GET)
-	public Map getProduct (@PathVariable int prodNo , @PathVariable(required = false) String menu , HttpServletRequest request ) throws Exception {
-		
-		System.out.println("/product/json/getProduct");
-		
-		Map<String, Object> map = new HashMap();
+		System.out.println("/product/getProduct");
 		
 		Product product = productService.getProduct(prodNo);
 		System.out.println(product);
+		model.addAttribute("product",product);
 		
-		map.put("product",product);
-		map.put("menu", menu);
-		
-		
-		return map;
-		}
+		if(menu.equals("manage")) {
+			return "forward:/product/updateProductView.jsp";
 			
-	
-	@RequestMapping(value = "/json/listProduct" , method = RequestMethod.POST)
-	public Map listProduct(@RequestBody Search search, HttpServletRequest request) throws Exception{
+		}else if(menu.equals("update")){
+			return "forward:/product/updateProduct.jsp";	
+		}	
 		
-		System.out.println("/product/listProduct :  POST");
+		Cookie[] cookies = request.getCookies();
+		//리퀘스트에 존재하는 모든 쿠키 가져옴
+		String history = null;
+		
+		boolean coo = true;
+		
+		int index = 0;
+		
+		for (int i = 0; i < cookies.length; i++) {
+				Cookie cookie = cookies[i];
+				if (cookie.getName().equals("history")) {
+					//히스토리란 이름을 가진걸 찾음
+					coo = false;
+					index = i;
+					break;				
+				}				
+			}
+		
+		if (coo) {		
+			Integer itg = new Integer(prodNo);
+			Cookie cookie = new Cookie("history",itg.toString());
+			//쿠키가 없을때 만들어줌
+			response.addCookie(cookie);	
+			
+		}else {	
+			history = cookies[index].getValue();
+					//업데이트된 벨류값을 히스토리에저장
+					history += ":"+ product.getProdNo();
+					cookies[index].setValue(history);
+					//업데이트된 히스토리를 담아서 보내줌
+					cookies[index].setPath("/");
+					response.addCookie(cookies[index]);
+					//브라우저에 보내기위해 리스펀스에 실어보냄	
+		}
+		
+		
+		return "forward:/product/getProduct.jsp";
+	}
+	
+	@RequestMapping(value = "listProduct")
+	public String listProduct(@ModelAttribute("search") Search search, Model model ,HttpServletRequest request) throws Exception{
+		
+		System.out.println("/product/listProduct :  GET");
 		int page = 1;
 		if(search.getCurrentPage() != 0) 
 			page = search.getCurrentPage();
@@ -110,21 +131,23 @@ public class ProductRestController {
 		Page resultPage = new Page(page,((Integer)(map.get("totalCount"))).intValue(),pageUnit, pageSize);
 		System.out.println(resultPage);
 		
-		map.put("resultPage",resultPage);
-		map.put("map",map);
-		map.put("search",search);
-		map.put("listType","Product");
+		model.addAttribute("resultPage",resultPage);
+		model.addAttribute("map",map);
+		model.addAttribute("search",search);
+		model.addAttribute("listType","Product");
 		
 		
 		
-		return map;
+		return "forward:/product/listProduct.jsp?menu="+request.getParameter("menu");
 	}
 	
-	@RequestMapping(value = "/json/updateProduct", method = RequestMethod.POST)
-	public Product updateProduct(@RequestBody Product product) throws Exception{
+	@RequestMapping(value = "updateProduct", method = RequestMethod.POST)
+	public String updateProduct(@ModelAttribute("product") Product product, Model model) throws Exception{
 		
 		System.out.println("/product/updateProduct");
 			
+		
+		
 		int prodNo = product.getProdNo();
 		product.setManuDate(product.getManuDate().replaceAll("-", ""));
 
@@ -132,7 +155,7 @@ public class ProductRestController {
 		
 		
 		
-		return product;
+		return "forward:/product/getProduct?prodNo="+prodNo+"&menu=update";
 	}
 	
 //	@RequestMapping("/updateProductView.do")
@@ -149,4 +172,10 @@ public class ProductRestController {
 //	}
 //	
 
+	public multipartFile getfile
+	
+	
+	
+	
+	
 }
